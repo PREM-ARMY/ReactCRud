@@ -172,6 +172,10 @@ const Users = () => {
                 <label className="form-label">Number</label>
                 <input type="text" className="form-control" placeholder="Enter number" />
               </div>
+              <div className="mb-3">
+                <label className="form-label">Image</label>
+                <input type="file" className="form-control" />
+              </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
           </div>
