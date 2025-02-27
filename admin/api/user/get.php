@@ -6,7 +6,7 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type,
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$banner_query = mysqli_query($conn, "SELECT * FROM tbl_users WHERE STATUS=1");
+$banner_query = mysqli_query($conn, "SELECT * FROM tbl_crud WHERE STATUS=1");
 $banner = [];
 while($fetch = mysqli_fetch_array($banner_query)){
     $banner[] = $fetch;
