@@ -39,6 +39,7 @@ const columns = [
   },
 ];
 
+
 const data = [
   {
     sno: 1,
@@ -66,113 +67,113 @@ const data = [
 const Userdatatable = () => {
   return (
     <div className="page-wrapper">
-    <div className="page-content">
-        
+      <div className="page-content">
+
         <div className="container-xxl">
-            <div className="row justify-content-center">
-                <div className="col-md-12 col-lg-12 mt-5">
-                
-                  <button className="btn btn-primary " data-bs-toggle="offcanvas" data-bs-target="#userOffcanvas" style={{float:"right",marginTop :"-51px"}}>
-                      Add User
-                  </button>
-                              
-                    <div className="card">
+          <div className="row justify-content-center">
+            <div className="col-md-12 col-lg-12 mt-5">
 
-                    <div className="card-header">
-                            <div className="row align-items-center">
-                                <div className="col">
-                                    <h4 className="card-title">Basic Example</h4>
-                                </div>
-                                <div className="col-auto">
-                                    <div className="input-group">
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            placeholder="Search..." 
-                                        />
-                                        <button className="btn btn-primary">Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+              <button className="btn btn-primary " data-bs-toggle="offcanvas" data-bs-target="#userOffcanvas" style={{ float: "right", marginTop: "-51px" }}>
+                Add User
+              </button>
 
-                        <div className="card-body" >
-                          <DataTable
-                          columns={columns}
-                          data={data}
-                          pagination
-                          />
+              <div className="card">
+
+                <div className="card-header">
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <h4 className="card-title">Basic Example</h4>
                     </div>
+                    <div className="col-auto">
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search..."
+                        />
+                        <button className="btn btn-primary">Search</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+                <div className="card-body" >
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    pagination
+                  />
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
         </div>
         <div className="offcanvas offcanvas-end" tabIndex="-1" id="userOffcanvas" aria-labelledby="offcanvasLabel">
-                        <div className="offcanvas-header">
-                            <h5 id="offcanvasLabel">Add New User</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            <form>
-                                <div className="mb-3">
-                                    <label className="form-label">S No</label>
-                                    <input type="text" className="form-control" placeholder="Enter serial number" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Name</label>
-                                    <input type="text" className="form-control" placeholder="Enter name" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Email</label>
-                                    <input type="email" className="form-control" placeholder="Enter email" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Password</label>
-                                    <input type="password" className="form-control" placeholder="Enter password" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Number</label>
-                                    <input type="text" className="form-control" placeholder="Enter number" />
-                                </div>
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
+          <div className="offcanvas-header">
+            <h5 id="offcanvasLabel">Add New User</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
+            <form>
+              <div className="mb-3">
+                <label className="form-label">S No</label>
+                <input type="text" className="form-control" placeholder="Enter serial number" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Name</label>
+                <input type="text" className="form-control" placeholder="Enter name" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Email</label>
+                <input type="email" className="form-control" placeholder="Enter email" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Password</label>
+                <input type="password" className="form-control" placeholder="Enter password" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Number</label>
+                <input type="text" className="form-control" placeholder="Enter number" />
+              </div>
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
 
-                    {/* Offcanvas for editing a user */}
-                    <div className="offcanvas offcanvas-end" tabIndex="-1" id="editUserOffcanvas" aria-labelledby="editOffcanvasLabel">
-                        <div className="offcanvas-header">
-                            <h5 id="editOffcanvasLabel">Edit User</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            <form>
-                                <div className="mb-3">
-                                    <label className="form-label">S No</label>
-                                    <input type="text" className="form-control" placeholder="Enter serial number" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Name</label>
-                                    <input type="text" className="form-control" placeholder="Enter name" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Email</label>
-                                    <input type="email" className="form-control" placeholder="Enter email" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Password</label>
-                                    <input type="password" className="form-control" placeholder="Enter password" />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Number</label>
-                                    <input type="text" className="form-control" placeholder="Enter number" />
-                                </div>
-                                <button type="submit" className="btn btn-primary">Update</button>
-                            </form>
-                        </div>
-                    </div>
+        {/* Offcanvas for editing a user */}
+        <div className="offcanvas offcanvas-end" tabIndex="-1" id="editUserOffcanvas" aria-labelledby="editOffcanvasLabel">
+          <div className="offcanvas-header">
+            <h5 id="editOffcanvasLabel">Edit User</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
+            <form>
+              <div className="mb-3">
+                <label className="form-label">S No</label>
+                <input type="text" className="form-control" placeholder="Enter serial number" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Name</label>
+                <input type="text" className="form-control" placeholder="Enter name" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Email</label>
+                <input type="email" className="form-control" placeholder="Enter email" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Password</label>
+                <input type="password" className="form-control" placeholder="Enter password" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Number</label>
+                <input type="text" className="form-control" placeholder="Enter number" />
+              </div>
+              <button type="submit" className="btn btn-primary">Update</button>
+            </form>
+          </div>
         </div>
-        </div>
+      </div>
+    </div>
   );
 };
 

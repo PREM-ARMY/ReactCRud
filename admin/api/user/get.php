@@ -6,11 +6,19 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type,
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+<<<<<<< HEAD
 $banner_query = mysqli_query($conn, "SELECT * FROM tbl_user WHERE STATUS=1");
 $banner = [];
 while($fetch = mysqli_fetch_array($banner_query)){
     $banner[] = $fetch;
+=======
+
+$get_query = mysqli_query($conn, "SELECT * FROM user WHERE STATUS=1");
+$fetch = [];
+while($fetch = mysqli_fetch_array($get_query)){
+    $fetch[] = $fetch;
+>>>>>>> fb36f2f6ece1477a7523a87cbfa8d2909d4a1a76
 }
-$response = ['status' => true, 'response' => $banner];
+$response = ['status' => true, 'response' => $user];
 echo json_encode($response)
 ?>
