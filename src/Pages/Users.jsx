@@ -1,12 +1,9 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import axios from "axios";
-import { httpClient } from "../utils/httpClient";
 import { FormControlLabel, Switch } from "@mui/material";
-import { MdEditDocument } from "react-icons/md";
 import { styled } from "@mui/material/styles";
+import { httpClient } from "../utils/httpClient";
 import { imageUrl } from "../env/envUrl";
 import { useNavigate } from "react-router-dom";
 import { uploadFileImage } from "../utils/uploadFile";
@@ -297,7 +294,7 @@ const Users = () => {
   return (
     <div className="page-wrapper">
       <div className="page-content">
-        <div className="container-xxl">
+      <div className="container-xxl">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-12 mt-5">
               <div className="card">
@@ -332,6 +329,7 @@ const Users = () => {
         </div>
 
         {/* Offcanvas for adding a new user */}
+
         <div className="offcanvas offcanvas-end" id="userOffcanvas">
           <div className="offcanvas-header">
             <h5>Add New User</h5>
@@ -373,6 +371,61 @@ const Users = () => {
                 Submit
               </button>
             </form>
+          </div>
+        </div>
+        
+        {/* Edit User Offcanvas */}
+        <div className="offcanvas offcanvas-end" id="usereditOffcanvas">
+          <div className="offcanvas-header">
+            <h5>Edit User</h5>
+            <button id="closeEditOffcanvasBtn" type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
+          </div>
+          <div className="offcanvas-body">
+            {editUser && (
+              <form onSubmit={handleUpdate}>
+                <div className="mb-3">
+                  <label className="form-label">Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editUser.NAME}
+                    onChange={(e) => setEditUser({ ...editUser, NAME: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={editUser.EMAIL}
+                    onChange={(e) => setEditUser({ ...editUser, EMAIL: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Number</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editUser.NUMBER}
+                    onChange={(e) => setEditUser({ ...editUser, NUMBER: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Image</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={(e) => setEditUser({ ...editUser, IMAGE: e.target.files[0].name })}
+                  />
+                  {editUser.IMAGE && (
+                    <div className="mt-2">
+                      <img src={`${imageUrl}${editUser.IMAGE}`} alt="User" width={100} />
+                    </div>
+                  )}
+                </div>
+                <button type="submit" className="btn btn-primary">Update</button>
+              </form>
+            )}
           </div>
         </div>
       </div>
