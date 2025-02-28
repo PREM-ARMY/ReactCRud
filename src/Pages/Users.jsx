@@ -1,31 +1,24 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import axios from "axios";
-import { httpClient } from "../utils/httpClient";
 import { FormControlLabel, Switch } from "@mui/material";
-import { MdEditDocument } from "react-icons/md";
 import { styled } from "@mui/material/styles";
+import { httpClient } from "../utils/httpClient";
 import { imageUrl } from "../env/envUrl";
 
 const Users = () => {
   const [userData, setUserData] = useState([]);
   const [isActive, setIsActive] = useState({});
-
+  const [editUser, setEditUser] = useState(null);
 
   const getAllUsers = async () => {
     try {
       const response = await httpClient.get("user/get.php");
-  
-      console.log("Full Response:", response);
-  
       if (response?.data?.status === true && Array.isArray(response?.data?.response)) {
-        const formattedData = response.data.response.map(user => 
+        const formattedData = response.data.response.map(user =>
           Object.fromEntries(Object.entries(user).filter(([key]) => isNaN(key)))
         );
-        
-        setUserData(formattedData); 
+        setUserData(formattedData);
       } else {
         console.error("API returned unexpected format:", response.data);
       }
@@ -33,63 +26,40 @@ const Users = () => {
       console.error("Error fetching user data:", error);
     }
   };
-  
 
   useEffect(() => {
     getAllUsers();
   }, []);
 
   const handleEdit = (row) => {
-    console.log("Edit User:", row);
-  
+    setEditUser(row); // Set selected user for editing
+    const offcanvas = new bootstrap.Offcanvas(document.getElementById("usereditOffcanvas"));
+    offcanvas.show();
   };
 
-  const handleActiveStatus = (row) => {
-    setIsActive((prev) => ({ ...prev, [row.id]: !prev[row.id] }));
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!editUser) return;
+    try {
+      await httpClient.put("user/update.php", editUser);
+      getAllUsers();
+      document.getElementById("closeEditOffcanvasBtn").click();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
-
-  const IOSSwitch = styled((props) => (
-    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-  ))(({ theme }) => ({
-    width: 42,
-    height: 26,
-    padding: 0,
-    "& .MuiSwitch-switchBase": {
-      padding: 0,
-      margin: 2,
-      transitionDuration: "300ms",
-      "&.Mui-checked": {
-        transform: "translateX(16px)",
-        color: "#fff",
-        "& + .MuiSwitch-track": {
-          backgroundColor: "#65C466",
-          opacity: 1,
-        },
-      },
-    },
-    "& .MuiSwitch-thumb": {
-      boxSizing: "border-box",
-      width: 22,
-      height: 22,
-    },
-    "& .MuiSwitch-track": {
-      borderRadius: 26 / 2,
-      backgroundColor: "#E9E9EA",
-      opacity: 1,
-    },
-  }));
 
   const columns = [
     { field: "ID", headerName: "S.No", width: 130 },
     { field: "NAME", headerName: "Name", width: 130 },
     { field: "EMAIL", headerName: "Email", width: 130 },
-    { field: "PHONENO", headerName: "Number", width: 160 },
+    { field: "NUMBER", headerName: "Number", width: 160 },
     {
       field: "IMAGE",
       headerName: "IMAGE",
       width: 200,
       renderCell: (params) => (
-        <img src={`${imageUrl}${params.row.IMAGE}`} alt={params.row.aboutTitle} width={50} height={50} />
+        <img src={`${imageUrl}${params.row.IMAGE}`} alt={params.row.NAME} width={50} height={50} />
       ),
     },
     { field: "PASSWORD", headerName: "Password", width: 130 },
@@ -99,13 +69,9 @@ const Users = () => {
       width: 200,
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <button style={{ padding: "5px", background: "#BAD6EB", borderRadius: "25px" }} onClick={() => handleEdit(params.row)}>
-            <MdEditDocument style={{ fontSize: "20px", color: "#162884" }} />
+          <button className="btn btn-outline-info me-3 mt-1" onClick={() => handleEdit(params.row)}>
+            Edit
           </button>
-          <FormControlLabel
-            control={<IOSSwitch checked={isActive[params.row.id] || false} />}
-            onChange={() => handleActiveStatus(params.row)}
-          />
         </div>
       ),
     },
@@ -114,7 +80,7 @@ const Users = () => {
   return (
     <div className="page-wrapper">
       <div className="page-content">
-        <div className="container-xxl">
+      <div className="container-xxl">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-12 mt-5">
               <div className="card">
@@ -149,6 +115,7 @@ const Users = () => {
         </div>
 
         {/* Offcanvas for adding a new user */}
+
         <div className="offcanvas offcanvas-end" id="userOffcanvas">
           <div className="offcanvas-header">
             <h5>Add New User</h5>
@@ -178,6 +145,61 @@ const Users = () => {
               </div>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+          </div>
+        </div>
+        
+        {/* Edit User Offcanvas */}
+        <div className="offcanvas offcanvas-end" id="usereditOffcanvas">
+          <div className="offcanvas-header">
+            <h5>Edit User</h5>
+            <button id="closeEditOffcanvasBtn" type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
+          </div>
+          <div className="offcanvas-body">
+            {editUser && (
+              <form onSubmit={handleUpdate}>
+                <div className="mb-3">
+                  <label className="form-label">Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editUser.NAME}
+                    onChange={(e) => setEditUser({ ...editUser, NAME: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={editUser.EMAIL}
+                    onChange={(e) => setEditUser({ ...editUser, EMAIL: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Number</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editUser.NUMBER}
+                    onChange={(e) => setEditUser({ ...editUser, NUMBER: e.target.value })}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Image</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={(e) => setEditUser({ ...editUser, IMAGE: e.target.files[0].name })}
+                  />
+                  {editUser.IMAGE && (
+                    <div className="mt-2">
+                      <img src={`${imageUrl}${editUser.IMAGE}`} alt="User" width={100} />
+                    </div>
+                  )}
+                </div>
+                <button type="submit" className="btn btn-primary">Update</button>
+              </form>
+            )}
           </div>
         </div>
       </div>

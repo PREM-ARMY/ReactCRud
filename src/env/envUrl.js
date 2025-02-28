@@ -1,4 +1,4 @@
 // / local url
-export const baseUrl = "http://localhost/percentages/admin/api/";
+export const baseUrl = "http://localhost/ReactCR/admin/api/";
 // image url
-export const imageUrl = "http://localhost/percentages/admin/uploads/";
+export const imageUrl = "http://localhost/ReactCR/admin/uploads/";
