@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -7,6 +8,7 @@ import { httpClient } from "../utils/httpClient";
 import { imageUrl } from "../env/envUrl";
 import { useNavigate } from "react-router-dom";
 import { uploadFileImage } from "../utils/uploadFile";
+import { MdEditDocument } from 'react-icons/md';
 
 const Users = () => {
   const [show, setShow] = useState(false);
@@ -60,18 +62,18 @@ const Users = () => {
     return isFormValid;
   };
 
+
   const columns = [
     {
-      field: "id",
+      field: "user_id",
       headerName: "S.No",
       filterable: false,
-      renderCell: (params) =>
-        params.api.getRowIndexRelativeToVisibleRows(params.row._id) + 1,
+      renderCell: (params) => params.api.getRowIndexRelativeToVisibleRows(params.row.user_id) + 1,
       width: 130,
     },
-    { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'email', headerName: 'Email', width: 180 },
-    { field: 'number', headerName: 'Number', width: 150 },
+    { field: "name", headerName: "Name", width: 130 },
+    { field: "email", headerName: "Email", width: 180 },
+    { field: "number", headerName: "Number", width: 150 },
     {
       field: "image",
       headerName: "Image",
@@ -81,7 +83,7 @@ const Users = () => {
         return (
           <div>
             <img
-              src={`${imageUrl}${params.row.image}`}
+              src={`${imageUrl}${params.row.image}`}  // Ensure image URL is correct
               alt={params.row.name}
               width={50}
               height={50}
@@ -96,44 +98,8 @@ const Users = () => {
       sortable: false,
       width: 200,
       renderCell: (params) => {
-        setIsActive(params?.row?.status);
-        const IOSSwitch = styled((props) => (
-          <Switch
-            focusVisibleClassName=".Mui-focusVisible"
-            disableRipple
-            {...props}
-          />
-        ))(({ theme }) => ({
-          width: 42,
-          height: 26,
-          padding: 0,
-          "& .MuiSwitch-switchBase": {
-            padding: 0,
-            margin: 2,
-            transitionDuration: "300ms",
-            "&.Mui-checked": {
-              transform: "translateX(16px)",
-              color: "#fff",
-              "& + .MuiSwitch-track": {
-                backgroundColor: "#65C466",
-                opacity: 1,
-                border: 0,
-              },
-            },
-          },
-        }));
         return (
-          <div
-            className="d-flex justify-content-between align-items-center "
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center",
-              height: "100%",
-            }}
-          >
+          <div className="d-flex justify-content-between align-items-center">
             <button
               style={{
                 padding: "5px",
@@ -143,13 +109,10 @@ const Users = () => {
               type="button"
               onClick={() => handleEdit(params.row)}
             >
-              <MdEditDocument
-                index={params.row.id}
-                style={{ fontSize: "20px", color: "#162884" }}
-              />
+              Edit
             </button>
             <FormControlLabel
-              control={<IOSSwitch sx={{ m: 1 }} checked={params?.row?.status} />}
+              control={<Switch sx={{ m: 1 }} checked={params.row.status === '1'} />}
               style={{ marginLeft: "10px" }}
               onChange={() => handleActiveStatus(params.row)}
             />
@@ -158,6 +121,7 @@ const Users = () => {
       },
     },
   ];
+
 
   const handleActiveStatus = async (row) => {
     try {
@@ -192,14 +156,21 @@ const Users = () => {
 
   const getAllUsers = async () => {
     try {
+      // Request to the endpoint user/get.php
       const response = await httpClient.get("user/get.php");
-      if (response?.data?.status == 200) {
-        setUserData(response?.data?.data?.users);
+      console.log("API Response:", response);
+
+
+      if (response?.data?.status === true) {
+        setUserData(response?.data?.data);
+      } else {
+        console.log("Error: ", response?.data?.message || "Something went wrong");
       }
     } catch (error) {
       console.log("get users error", error);
     }
   };
+
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -291,10 +262,14 @@ const Users = () => {
     getAllUsers();
   }, []);
 
+  useEffect(() => {
+    console.log("userData:", userData);  // This will log the userData to the console
+  }, [userData]);
+
   return (
     <div className="page-wrapper">
       <div className="page-content">
-      <div className="container-xxl">
+        <div className="container-xxl">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-12 mt-5">
               <div className="card">
@@ -312,16 +287,20 @@ const Users = () => {
                 </div>
                 <div className="card-body pt-0">
                   <Box sx={{ height: 400, width: "100%" }}>
+
                     <DataGrid
                       columns={columns}
                       rows={userData}
+
                       slots={{ toolbar: GridToolbar }}
                       slotProps={{ toolbar: { showQuickFilter: true } }}
                       autoHeight
                       pageSizeOptions={[10, 25, 50, 100]}
-                      getRowId={(row) => row.ID || row._ID}
+                      getRowId={(row) => row.user_id || row.userId || row._id}
                     />
+
                   </Box>
+
                 </div>
               </div>
             </div>
@@ -363,7 +342,7 @@ const Users = () => {
                 {formError.image && <p className="errorMessage">{formError.image}</p>}
                 {userPreview && (
                   <div className="image-preview">
-                    <img src={userPreview} alt="Preview" style={{ width: "100px", height: "100px" }}  />
+                    <img src={userPreview} alt="Preview" style={{ width: "100px", height: "100px" }} />
                   </div>
                 )}
               </div>
@@ -373,61 +352,8 @@ const Users = () => {
             </form>
           </div>
         </div>
-        
-        {/* Edit User Offcanvas */}
-        <div className="offcanvas offcanvas-end" id="usereditOffcanvas">
-          <div className="offcanvas-header">
-            <h5>Edit User</h5>
-            <button id="closeEditOffcanvasBtn" type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
-          </div>
-          <div className="offcanvas-body">
-            {editUser && (
-              <form onSubmit={handleUpdate}>
-                <div className="mb-3">
-                  <label className="form-label">Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={editUser.NAME}
-                    onChange={(e) => setEditUser({ ...editUser, NAME: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={editUser.EMAIL}
-                    onChange={(e) => setEditUser({ ...editUser, EMAIL: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Number</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={editUser.NUMBER}
-                    onChange={(e) => setEditUser({ ...editUser, NUMBER: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Image</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={(e) => setEditUser({ ...editUser, IMAGE: e.target.files[0].name })}
-                  />
-                  {editUser.IMAGE && (
-                    <div className="mt-2">
-                      <img src={`${imageUrl}${editUser.IMAGE}`} alt="User" width={100} />
-                    </div>
-                  )}
-                </div>
-                <button type="submit" className="btn btn-primary">Update</button>
-              </form>
-            )}
-          </div>
-        </div>
+
+
       </div>
     </div>
   );

@@ -1,17 +1,28 @@
 <?php
-include "../../includes/db.php";
-header("Access-Control-Allow-Origin:*");
-header("Content-Type: application/json; charset=UTF-8");
-header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type,Authorization');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type');
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json, charset=utf-8');
 
-$get_query = mysqli_query($conn, "SELECT * FROM user WHERE STATUS=1");
-$fetch = [];
-while($fetch = mysqli_fetch_array($get_query)){
-    $fetch[] = $fetch;
+include "../../includes/db.php";
+
+
+$data = [];
+$query = mysqli_query($conn, "SELECT * FROM user WHERE status = 1");
+
+if ($query) {
+    $count = mysqli_num_rows($query); 
+  
+    while ($fet = mysqli_fetch_assoc($query)) {
+        $data[] = $fet;
+    }
+    
+   
+    $status = ['status' => true, 'message' => 'Success', 'data' => $data, 'count' => $count];
+} else {
+ 
+    $status = ['status' => false, 'message' => 'Unable to fetch data, please try again later.'];
 }
-$response = ['status' => true, 'response' => $user];
-echo json_encode($response)
+
+
+echo json_encode($status);
 ?>
