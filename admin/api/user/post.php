@@ -6,15 +6,10 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type,
 include "../libs/dbConnection.php";
 include "../libs/jwtToken.php";
 
-$headers = apache_request_headers();
 
 $data = json_decode(file_get_contents('php://input'));
 
-if (!isset($headers['Authorization'])) {
-    $status = ['status' => false, 'message' => 'Unauthorized Access'];
-    echo json_encode($status);
-    exit();
-}
+
 
 
 
@@ -29,6 +24,8 @@ if ($reponse['status']) {
         $role = 'admin';
         @$department_id = $data->dept;
         $date = date('Y-m-d H:i:s');
+
+
 
 
         $query = mysqli_query($con, "INSERT INTO tbl_organization_data SET company_id='{$reponse['created_by']}', superadmin_id='" . $department_id . "', firstName='" . $firstName . "',lastName='" . $lastName . "',email='" . $email . "',password='" . $password . "',role='" . $role . "',country_id='" . $country . "',mobile='" . $mobile . "',created_by='" . $reponse['userId'] . "',created_at='" . $date . "',updated_at='" . $date . "',status=1");
