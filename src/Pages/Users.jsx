@@ -363,7 +363,7 @@ const Users = () => {
                 {formError.image && <p className="errorMessage">{formError.image}</p>}
                 {userPreview && (
                   <div className="image-preview">
-                    <img src={userPreview} alt="Preview" style={{ width: "100px", height: "100px" }} />
+                    <img src={userPreview} alt="Preview" style={{ width: "100px", height: "100px" }}  />
                   </div>
                 )}
               </div>
