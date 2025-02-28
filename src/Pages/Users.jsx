@@ -18,10 +18,6 @@ const Users = () => {
     image: "",
   });
   const [userData, setUserData] = useState([]);
-<<<<<<< HEAD
-  const [isActive, setIsActive] = useState({});
-  const [editUser, setEditUser] = useState(null);
-=======
   const [updateUser, setUpdateUser] = useState({});
   const [snackbarStatus, setSnackbarStatus] = useState(false);
   const [snackbarIcon, setSnackbarIcon] = useState(null);
@@ -193,23 +189,12 @@ const Users = () => {
     });
     setUpdateUser(row);
   };
->>>>>>> fb36f2f6ece1477a7523a87cbfa8d2909d4a1a76
 
   const getAllUsers = async () => {
     try {
       const response = await httpClient.get("user/get.php");
-<<<<<<< HEAD
-      if (response?.data?.status === true && Array.isArray(response?.data?.response)) {
-        const formattedData = response.data.response.map(user =>
-          Object.fromEntries(Object.entries(user).filter(([key]) => isNaN(key)))
-        );
-        setUserData(formattedData);
-      } else {
-        console.error("API returned unexpected format:", response.data);
-=======
       if (response?.data?.status == 200) {
         setUserData(response?.data?.data?.users);
->>>>>>> fb36f2f6ece1477a7523a87cbfa8d2909d4a1a76
       }
     } catch (error) {
       console.log("get users error", error);
@@ -306,55 +291,6 @@ const Users = () => {
     getAllUsers();
   }, []);
 
-<<<<<<< HEAD
-  const handleEdit = (row) => {
-    setEditUser(row); // Set selected user for editing
-    const offcanvas = new bootstrap.Offcanvas(document.getElementById("usereditOffcanvas"));
-    offcanvas.show();
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    if (!editUser) return;
-    try {
-      await httpClient.put("user/update.php", editUser);
-      getAllUsers();
-      document.getElementById("closeEditOffcanvasBtn").click();
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
-  };
-
-  const columns = [
-    { field: "ID", headerName: "S.No", width: 130 },
-    { field: "NAME", headerName: "Name", width: 130 },
-    { field: "EMAIL", headerName: "Email", width: 130 },
-    { field: "NUMBER", headerName: "Number", width: 160 },
-    {
-      field: "IMAGE",
-      headerName: "IMAGE",
-      width: 200,
-      renderCell: (params) => (
-        <img src={`${imageUrl}${params.row.IMAGE}`} alt={params.row.NAME} width={50} height={50} />
-      ),
-    },
-    { field: "PASSWORD", headerName: "Password", width: 130 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 200,
-      renderCell: (params) => (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button className="btn btn-outline-info me-3 mt-1" onClick={() => handleEdit(params.row)}>
-            Edit
-          </button>
-        </div>
-      ),
-    },
-  ];
-
-=======
->>>>>>> fb36f2f6ece1477a7523a87cbfa8d2909d4a1a76
   return (
     <div className="page-wrapper">
       <div className="page-content">
