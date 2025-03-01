@@ -15,20 +15,17 @@ $data = json_decode(file_get_contents('php://input'));
 
 if ($reponse['status']) {
     try {
-        $firstName = $data->f_name;
-        $lastName = $data->l_name;
+        $firstName = $data->name;
         $email = $data->email;
-        $password = $data->psw;
-        $country = $data->contry;
-        $mobile = $data->mobile;
-        $role = 'admin';
-        @$department_id = $data->dept;
-        $date = date('Y-m-d H:i:s');
+        $password = $data->password;
+        $number = $data->number;
+        $image = $data->image;
+       
 
 
 
 
-        $query = mysqli_query($con, "INSERT INTO tbl_organization_data SET company_id='{$reponse['created_by']}', superadmin_id='" . $department_id . "', firstName='" . $firstName . "',lastName='" . $lastName . "',email='" . $email . "',password='" . $password . "',role='" . $role . "',country_id='" . $country . "',mobile='" . $mobile . "',created_by='" . $reponse['userId'] . "',created_at='" . $date . "',updated_at='" . $date . "',status=1");
+        $query = mysqli_query($con, "INSERT INTO user SET  name ='" . $firstName . "',email='" . $email . "',password='" . $password . "',number='" . $number . "', image='" . $image . "',status=1");
         if ($query) {
             $status = ['status' => true, 'message' => 'Data inserted successfully'];
         } else {
