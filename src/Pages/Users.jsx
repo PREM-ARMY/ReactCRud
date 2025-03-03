@@ -32,7 +32,7 @@ const Users = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // Validation function
+ 
   const validate = () => {
     let errors = {};
     let isFormValid = true;
@@ -53,10 +53,10 @@ const Users = () => {
       isFormValid = false;
       errors.number = "**Please enter the number";
     }
-    if (!formData.image) {
-      isFormValid = false;
-      errors.image = "**Please upload an image";
-    }
+    // if (!formData.image) {
+    //   isFormValid = false;
+    //   errors.image = "**Please upload an image";
+    // }
 
     setFormError(errors);
     return isFormValid;
@@ -83,7 +83,7 @@ const Users = () => {
         return (
           <div>
             <img
-              src={`${imageUrl}${params.row.image}`}  // Ensure image URL is correct
+              src={`${imageUrl}${params.row.image}`}  
               alt={params.row.name}
               width={50}
               height={50}
@@ -156,7 +156,7 @@ const Users = () => {
 
   const getAllUsers = async () => {
     try {
-      // Request to the endpoint user/get.php
+      
       const response = await httpClient.get("user/get.php");
       console.log("API Response:", response);
 
@@ -187,19 +187,19 @@ const Users = () => {
     const file = event.target.files[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setUserPreview(objectUrl); // Preview image if required
+      setUserPreview(objectUrl); 
 
-      const imageResponse = await uploadFileImage(file); // Assuming you have an upload function
+      const imageResponse = await uploadFileImage(file);
 
       if (!imageResponse?.data?.success) {
         setSnackbarStatus(true);
         setSnackbarIcon("warning");
         setSnackbarRes(imageResponse?.message);
       } else {
-        // Successfully uploaded, update formData with the image name or path returned from the backend
+       
         setFormData((prev) => ({
           ...prev,
-          image: imageResponse?.data?.data?.filename,  // Update with the file name or path returned from the backend
+          image: imageResponse?.data?.data?.filename,  
         }));
       }
     }
@@ -263,7 +263,7 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    console.log("userData:", userData);  // This will log the userData to the console
+    console.log("userData:", userData);  
   }, [userData]);
 
   return (
